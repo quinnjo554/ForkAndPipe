@@ -1,10 +1,3 @@
-detected, all parties involved will be given a zero for the project and the penalty will be documented on a form that you must sign. You may be referred to the Dean’s office for further discussion. If you use any online resources, you must cite the source in both the comments and the summary document.
-s NOT needed.
-
-### Cheating
-
-All work must be your own. If cheating is # Operating Systems Concepts
-
 ## CSci 474
 
 ### Project #1: Fork and Pipe
