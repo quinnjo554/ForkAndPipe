@@ -1,10 +1,8 @@
 #include "Process.h"
-#include <unistd.h>
+#include <sstream>
 
-Process::Process(int id, const std::string &filename, int numLines)
-    : id_(id), filename_(filename), numLines_(numLines) {
-  pipe(fds); // init fds
-}
+Process::Process(int id, const std::string &filename, int numLines, int *fds)
+    : id_(id), filename_(filename), numLines_(numLines), fds_(fds) {}
 
 Process::~Process() { closeFile(); }
 
@@ -33,11 +31,17 @@ long long Process::processFile() {
     lineCount++;
   }
 
-  int write_result = write(fds[1], &sum, sizeof(sum));
+  // Write the sum to the parent process through the pipe
+  int write_result = write(fds_[1], &sum, sizeof(sum));
   if (write_result == -1) {
+    perror("write");
     return -1;
   }
-  return sum;
+  return sum; // this is the correct number;
 }
 
-void Process::closeFile() { file_.close(); }
+void Process::closeFile() {
+  file_.close();
+  close(fds_[0]); // Close the reading end of the pipe
+  close(fds_[1]); // Close the writing end of the pipe }
+  }

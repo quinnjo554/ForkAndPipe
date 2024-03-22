@@ -6,7 +6,8 @@
 
 class Process : public FileProcessor {
 public:
-  Process(int id, const std::string &filename, int numLines);
+
+  Process(int id, const std::string &filename, int numLines, int *fds);
   virtual ~Process();
   bool openFile(const std::string &filename) override;
   long long processFile() override;
@@ -14,8 +15,8 @@ public:
 
 private:
   int id_;
+  int* fds_;
   std::string filename_;
   int numLines_;
   std::fstream file_;
-  int fds[2];
 };
