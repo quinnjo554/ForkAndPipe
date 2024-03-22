@@ -4,8 +4,10 @@
 #include <string>
 #include <unistd.h>
 #include <vector>
-
+#include <chrono>
+#include <sys/wait.h>
 bool isNewLine(char ch) { return ch == '\n' || ch == '\r'; }
+
 int main() {
   int num_processes;
   std::cout << "Enter the number of child processes to create (1, 2, or 4): ";
@@ -52,6 +54,7 @@ int main() {
         exit(EXIT_FAILURE);
     }
 }
+auto start = std::chrono::high_resolution_clock::now(); //Start time
 for (int i = 0; i < num_processes; ++i) {
     pid_t pid = fork();
     if (pid < 0) {
@@ -67,13 +70,17 @@ for (int i = 0; i < num_processes; ++i) {
         // Write result to pipe
         write(fds_array[i][1], &result, sizeof(result));
         close(fds_array[i][1]); // Close write end of pipe
-
         return 0; // Exit child process
     } else { // Parent process
+        int status;
+        waitpid(pid, &status, 0);
         close(fds_array[i][1]); // Close unused write end
     }
 }
 
+auto end = std::chrono::high_resolution_clock::now(); // End timer
+std::chrono::duration<double, std::milli> duration = end - start;
+std::cout << "Process " << num_processes << " took " << duration.count() << " milliseconds." << std::endl;
 // Parent process reads and prints results
 int total_result = 0;
 for (int i = 0; i < num_processes; ++i) {
