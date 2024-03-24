@@ -12,7 +12,6 @@ bool Process::openFile(const std::string &filename) {
 }
 
 long long Process::processFile() {
-  // pipe the result to the parent process
   if (!file_.is_open()) {
     return -1;
   }
@@ -21,8 +20,15 @@ long long Process::processFile() {
   int lineCount = 0;
   std::string line;
 
-  file_.seekg(id_ * numLines_ * sizeof(int), std::ios::beg);
+  // skip lines processed by previous child processes
+  for (int i = 0; i < id_ * numLines_; ++i) {
+    if (!std::getline(file_, line)) {
+      perror("getline");
+      return -1;
+    }
+  }
 
+  // process assigned lines
   while (lineCount < numLines_ && std::getline(file_, line)) {
     int number;
     std::stringstream ss(line);
@@ -31,17 +37,19 @@ long long Process::processFile() {
     lineCount++;
   }
 
-  // Write the sum to the parent process through the pipe
+  // write the sum to parent thorugh pipe
   int write_result = write(fds_[1], &sum, sizeof(sum));
+
   if (write_result == -1) {
     perror("write");
     return -1;
   }
-  return sum; // this is the correct number;
+
+  return sum;
 }
 
 void Process::closeFile() {
   file_.close();
-  close(fds_[0]); // Close the reading end of the pipe
-  close(fds_[1]); // Close the writing end of the pipe }
-  }
+  close(fds_[0]);
+  close(fds_[1]);
+}

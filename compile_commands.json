@@ -1,0 +1,41 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-Isrc/Headers",
+      "-c",
+      "-o",
+      "obj/main.o",
+      "src/Source/main.cpp"
+    ],
+    "directory": "/home/quinn/code/projects/osProj1",
+    "file": "/home/quinn/code/projects/osProj1/src/Source/main.cpp",
+    "output": "/home/quinn/code/projects/osProj1/obj/main.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-Isrc/Headers",
+      "-c",
+      "-o",
+      "obj/Process.o",
+      "src/Source/Process.cpp"
+    ],
+    "directory": "/home/quinn/code/projects/osProj1",
+    "file": "/home/quinn/code/projects/osProj1/src/Source/Process.cpp",
+    "output": "/home/quinn/code/projects/osProj1/obj/Process.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-Isrc/Headers",
+      "-c",
+      "-o",
+      "obj/utils.o",
+      "src/Source/utils.cpp"
+    ],
+    "directory": "/home/quinn/code/projects/osProj1",
+    "file": "/home/quinn/code/projects/osProj1/src/Source/utils.cpp",
+    "output": "/home/quinn/code/projects/osProj1/obj/utils.o"
+  }
+]
